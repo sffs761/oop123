@@ -93,7 +93,7 @@ public class Balloom extends Enemy {
             }
             if (step == 300) {
                 remove();
-                //Main.enemies.remove(this);
+                Main.enemies.remove(this);
                 dead.stop();
             }
         }
@@ -104,6 +104,5 @@ public class Balloom extends Enemy {
         step = 0;
         balloomMove.stop();
         dead.start();
-
     }
 }

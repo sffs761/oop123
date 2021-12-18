@@ -26,4 +26,8 @@ public class Collision {
                 || (verticalCollision(topA, bottomA, topB, bottomB) && leftA == leftB)
                 || (horizontalCollision(leftA, rightA, leftB, rightB) && topA == topB);
     }
+
+    public static boolean isDuplicate(Entity entityA, Entity entityB) {
+        return entityA.getX() == entityB.getX() && entityB.getY() == entityA.getY();
+    }
 }

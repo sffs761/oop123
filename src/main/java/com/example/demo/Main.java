@@ -100,6 +100,17 @@ public class Main extends Application {
                         enemies.remove(i);
                     }
                 }
+                for (int i = 0; i < bricks.size(); i++) {
+                    if (Collision.isDuplicate(flame, bricks.get(i))) {
+                        bricks.get(i).destroy();
+                        bricks.remove(i);
+                    }
+                }
+//                for (int i = 0; i < bombList.size(); i++) {
+//                    if (Collision.isDuplicate(flame, bombList.get(i))) {
+//                        bombList.get(i).trigger();
+//                    }
+//                }
             }
         }
     };
@@ -120,6 +131,9 @@ public class Main extends Application {
         gRenderer.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.D) {
+                    //System.out.println(bombList.size());
+                }
                 player.handleEvent(keyEvent);
             }
         });
