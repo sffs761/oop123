@@ -83,8 +83,9 @@ public class Bomb extends Entity {
     public void explode() {
         step = 0;
         timerBomb.start();
+        currentFlames.add(new Flame("mid", getX(), getY()));
         boolean skip = false;
-        for (int i = 1; i <= radius; i++) {
+        for (int i = 1; i < radius; i++) {
             for (Wall wall : Main.walls) {
                 if (wall.getX() == this.getX() && wall.getY() == this.getY() + 16 * i) {
                     skip = true;
@@ -117,7 +118,7 @@ public class Bomb extends Entity {
             }
         }
         skip = false;
-        for (int i = 1; i <= radius; i++) {
+        for (int i = 1; i < radius; i++) {
             for (Wall wall : Main.walls) {
                 if (wall.getX() == this.getX() && wall.getY() == this.getY() - 16 * i) {
                     skip = true;
@@ -140,7 +141,7 @@ public class Bomb extends Entity {
         }
         if (!skip) {
             for (Wall wall : Main.walls) {
-                if (wall.getX() == this.getX() && wall.getY() == this.getY() + 16 * radius) {
+                if (wall.getX() == this.getX() && wall.getY() == this.getY() - 16 * radius) {
                     skip = true;
                     break;
                 }
@@ -150,7 +151,7 @@ public class Bomb extends Entity {
             }
         }
         skip = false;
-        for (int i = 1; i <= radius; i++) {
+        for (int i = 1; i < radius; i++) {
             for (Wall wall : Main.walls) {
                 if (wall.getX() - 16 * i == this.getX() && wall.getY() == this.getY()) {
                     skip = true;
@@ -183,7 +184,7 @@ public class Bomb extends Entity {
             }
         }
         skip = false;
-        for (int i = 1; i <= radius; i++) {
+        for (int i = 1; i < radius; i++) {
             for (Wall wall : Main.walls) {
                 if (wall.getX() + 16 * i == this.getX() && wall.getY() == this.getY()) {
                     skip = true;
@@ -206,7 +207,7 @@ public class Bomb extends Entity {
         }
         if (!skip) {
             for (Wall wall : Main.walls) {
-                if (wall.getX() == this.getX() + 16 * radius && wall.getY() == this.getY()) {
+                if (wall.getX() == this.getX() - 16 * radius && wall.getY() == this.getY()) {
                     skip = true;
                     break;
                 }

@@ -101,16 +101,27 @@ public class Main extends Application {
                     }
                 }
                 for (int i = 0; i < bricks.size(); i++) {
-                    if (Collision.isDuplicate(flame, bricks.get(i))) {
+                    if (Collision.isCollision(flame, bricks.get(i))) {
                         bricks.get(i).destroy();
                         bricks.remove(i);
                     }
+                }
+                if (Collision.isCollision(flame, player)) {
+                    player.dead();
+
                 }
 //                for (int i = 0; i < bombList.size(); i++) {
 //                    if (Collision.isDuplicate(flame, bombList.get(i))) {
 //                        bombList.get(i).trigger();
 //                    }
 //                }
+            }
+            for (Bomb bomb : bombList) {
+                if (Collision.isCollision(player, bomb) && bomb.isWalkAble()) {
+                    if (!Collision.isCollision(player, bomb)){
+                        bomb.setWalkAble(false);
+                    }
+                }
             }
         }
     };

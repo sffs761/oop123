@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -70,11 +71,38 @@ public class Bomber extends Entity {
                 setY(y);
             }
         }
+        for (Bomb bomb : Main.bombList) {
+            if (Collision.isCollision(this, bomb) && !bomb.isWalkAble()) {
+                setX(x);
+                setY(y);
+            }
+        }
         update();
     }
 
-    public void dead() {
+    public void stepDead() {
+        loadImage("player_dead" + ((int) step / 100) + ".png");
+        step++;
+        update();
+    }
 
+    AnimationTimer dead = new AnimationTimer() {
+        @Override
+        public void handle(long now) {
+            if (step < 300) {
+                stepDead();
+            }
+            if (step == 300) {
+                remove();
+                Main.gRenderer.getChildren().remove(this);
+                dead.stop();
+            }
+        }
+    };
+
+    public void dead() {
+        step = 0;
+        dead.start();
     }
 
     public int getSpeed() {
