@@ -14,7 +14,7 @@ public class Flame extends Entity {
     }
 
     public void stepBurn() {
-        loadImage("explosion_" + direction + ((int) step / 50) + ".png");
+        loadImage("explosion_" + direction + ((int) step / 15) + ".png");
         step++;
         update();
     }
@@ -22,10 +22,10 @@ public class Flame extends Entity {
     AnimationTimer burn = new AnimationTimer() {
         @Override
         public void handle(long l) {
-            if (step < 150) {
+            if (step < 45) {
                 stepBurn();
             }
-            if (step == 150) {
+            if (step == 45) {
                 burn.stop();
                 remove();
             }

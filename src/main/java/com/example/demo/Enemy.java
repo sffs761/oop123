@@ -1,7 +1,7 @@
 package com.example.demo;
 
 public abstract class Enemy extends Entity {
-    protected int speed;
+    protected double speed;
     protected int step = 0;
     protected int direction = 0;
 
@@ -14,7 +14,7 @@ public abstract class Enemy extends Entity {
 
     public abstract void dead();
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 

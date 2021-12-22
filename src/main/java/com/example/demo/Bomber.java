@@ -8,20 +8,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bomber extends Entity {
-    private int speed;
+    private double speed;
     private int step = 0;
     private boolean isDead = false;
 
     public Bomber() {
         super();
         loadImage("player.png");
-        speed = 4;
+        speed = 0.5;
     }
 
     private void placeBomb() {
         Bomb bomb = new Bomb();
-        double x = getX() % 16 < 8 ? getX() / 16 * 16 : (getX() / 16 + 1) * 16;
-        double y = getY() % 16 < 8 ? getY() / 16 * 16 : (getY() / 16 + 1) * 16;
+        double x = getX() % Main.SCALE < Main.SCALE / 2 ? getX() / Main.SCALE * Main.SCALE
+                : (getX() / Main.SCALE + 1) * Main.SCALE;
+        double y = getY() % Main.SCALE < Main.SCALE / 2 ? getY() / Main.SCALE * Main.SCALE
+                : (getY() / Main.SCALE + 1) * Main.SCALE;
         bomb.setX((int) x);
         bomb.setY((int) y);
         Main.bombList.add(bomb);
@@ -32,24 +34,31 @@ public class Bomber extends Entity {
     public void handleEvent(KeyEvent event) {
         int x = getX();
         int y = getY();
+        boolean collisionPrecheck = false;
+        for (Bomb bomb : Main.bombList) {
+            if (Collision.isCollision(this, bomb)) {
+                collisionPrecheck = true;
+                break;
+            }
+        }
         if (event.getCode() == KeyCode.UP) {
             if (frame.getY() > 0) {
-                frame.setY(frame.getY() - speed);
+                frame.setY(frame.getY() - speed * Main.SCALE);
             }
             loadImage("player_up_" + step + ".png");
         } else if (event.getCode() == KeyCode.DOWN) {
             if (frame.getY() + frame.getHeight() < Main.SCREEN_HEIGHT) {
-                frame.setY(frame.getY() + speed);
+                frame.setY(frame.getY() + speed * Main.SCALE);
             }
             loadImage("player_down_" + step + ".png");
         } else if (event.getCode() == KeyCode.LEFT) {
             if (frame.getX() > 0) {
-                frame.setX(frame.getX() - speed);
+                frame.setX(frame.getX() - speed * Main.SCALE);
             }
             loadImage("player_left_" + step + ".png");
         } else if (event.getCode() == KeyCode.RIGHT) {
             if (frame.getX() + frame.getWidth() < Main.SCREEN_WIDTH) {
-                frame.setX(frame.getX() + speed);
+                frame.setX(frame.getX() + speed * Main.SCALE);
             }
             loadImage("player_right_" + step + ".png");
         }
@@ -74,15 +83,17 @@ public class Bomber extends Entity {
         }
         for (Bomb bomb : Main.bombList) {
             if (Collision.isCollision(this, bomb) && !bomb.isWalkAble()) {
-                setX(x);
-                setY(y);
+                if (!collisionPrecheck) {
+                    setX(x);
+                    setY(y);
+                }
             }
         }
         update();
     }
 
     public void stepDead() {
-        loadImage("player_dead" + ((int) step / 100) + ".png");
+        loadImage("player_dead" + ((int) step / 30) + ".png");
         step++;
         update();
     }
@@ -90,10 +101,10 @@ public class Bomber extends Entity {
     AnimationTimer dead = new AnimationTimer() {
         @Override
         public void handle(long now) {
-            if (step < 300) {
+            if (step < 90) {
                 stepDead();
             }
-            if (step == 300) {
+            if (step == 90) {
                 remove();
                 Main.gRenderer.getChildren().remove(this);
                 dead.stop();
@@ -106,7 +117,7 @@ public class Bomber extends Entity {
         dead.start();
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 

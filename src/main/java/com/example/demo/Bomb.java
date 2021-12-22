@@ -25,7 +25,7 @@ public class Bomb extends Entity {
     }
 
     public void stepBomb() {
-        loadImage("bomb_" + ((int) step / 100) + ".png");
+        loadImage("bomb_" + ((int) step / 50) + ".png");
         step++;
         update();
     }
@@ -33,10 +33,10 @@ public class Bomb extends Entity {
     AnimationTimer timerBomb = new AnimationTimer() {
         @Override
             public void handle(long l) {
-            if (step < 300) {
+            if (step < 150) {
                 stepBomb();
             }
-            if (step == 300) {
+            if (step == 150) {
                 trigger();
             }
         }
@@ -54,7 +54,7 @@ public class Bomb extends Entity {
     }
 
     public void stepExplode() {
-        loadImage("bomb_exploded" + ((int) step / 50) + ".png");
+        loadImage("bomb_exploded" + ((int) step / 15) + ".png");
         step++;
         update();
     }
@@ -66,10 +66,10 @@ public class Bomb extends Entity {
     AnimationTimer timer = new AnimationTimer() {
         @Override
         public void handle(long l) {
-            if (step < 150) {
+            if (step < 45) {
                 stepExplode();
             }
-            if (step == 150) {
+            if (step == 45) {
                 removeBomb();
                 for (Flame flame : currentFlames) {
                     Main.flames.remove(flame);

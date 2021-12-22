@@ -6,4 +6,11 @@ public class Grass extends Entity {
         loadImage("grass.png");
     }
 
+    public Grass(int x, int y) {
+        super();
+        loadImage("grass.png");
+        setX(x);
+        setY(y);
+    }
+
 }

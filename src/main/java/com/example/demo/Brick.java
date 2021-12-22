@@ -18,7 +18,7 @@ public class Brick extends Entity {
     }
 
     private void stepDestroy() {
-        loadImage("brick_exploded" + ((int) step / 100) + ".png");
+        loadImage("brick_exploded" + ((int) step / 25) + ".png");
         step++;
         update();
     }
@@ -26,10 +26,10 @@ public class Brick extends Entity {
     AnimationTimer destroy = new AnimationTimer() {
         @Override
         public void handle(long now) {
-            if (step < 300) {
+            if (step < 75) {
                 stepDestroy();
             }
-            if (step == 300) {
+            if (step == 75) {
                 remove();
                 Main.bricks.remove(this);
                 destroy.stop();
