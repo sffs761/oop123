@@ -1,16 +1,12 @@
 package com.example.demo;
 
-public class Wall extends Entity{
+public class Wall extends StaticEntity {
     public Wall() {
-        super();
-        loadImage("wall.png");
+        super("wall");
     }
 
     public Wall(int x, int y) {
-        super();
-        loadImage("wall.png");
-        setX(x);
-        setY(y);
+        super(x, y, "wall");
     }
 
 }

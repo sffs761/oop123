@@ -1,18 +1,15 @@
 package com.example.demo;
 
-public abstract class Enemy extends Entity {
+public abstract class Character extends DynamicEntity {
     protected double speed;
-    protected int step = 0;
-    protected int direction = 0;
 
-    public Enemy() {
+    public Character() {
         super();
-        speed = 1;
     }
 
-    public abstract void move();
-
-    public abstract void dead();
+    public Character(int x, int y) {
+        super(x, y);
+    }
 
     public double getSpeed() {
         return speed;
@@ -21,5 +18,7 @@ public abstract class Enemy extends Entity {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
+
+    public abstract void dead();
 
 }

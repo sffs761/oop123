@@ -4,12 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Bomber extends Entity {
-    private double speed;
-    private int step = 0;
+public class Bomber extends Character {
     private boolean isDead = false;
 
     public Bomber() {
@@ -17,6 +12,24 @@ public class Bomber extends Entity {
         loadImage("player.png");
         speed = 0.5;
     }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+
 
     private void placeBomb() {
         Bomb bomb = new Bomb();
@@ -115,22 +128,6 @@ public class Bomber extends Entity {
     public void dead() {
         step = 0;
         dead.start();
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public boolean isDead() {
-        return isDead;
-    }
-
-    public void setDead(boolean dead) {
-        isDead = dead;
     }
 
 }

@@ -4,11 +4,16 @@ import javafx.animation.AnimationTimer;
 
 import java.util.ArrayList;
 
-public class Bomb extends Entity {
-    private int step;
+public class Bomb extends DynamicObject {
     private static int radius = 2;
     private boolean walkAble = true;
     private ArrayList<Flame> currentFlames = new ArrayList<>();
+
+    public Bomb() {
+        super();
+        loadImage("bomb_0.png");
+        step = 0;
+    }
 
     public boolean isWalkAble() {
         return walkAble;
@@ -16,12 +21,6 @@ public class Bomb extends Entity {
 
     public void disableWalkability() {
         walkAble = false;
-    }
-
-    public Bomb() {
-        super();
-        loadImage("bomb_0.png");
-        step = 0;
     }
 
     public void stepBomb() {

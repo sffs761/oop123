@@ -37,7 +37,7 @@ public class Main extends Application {
     public static List<Wall> walls = new ArrayList<>();
     public static List<Grass> grasses = new ArrayList<>();
     public static Bomber player = new Bomber();
-    public static List<Enemy> enemies = new ArrayList<>();
+    public static List<Character> enemies = new ArrayList<>();
     public static List<Brick> bricks = new ArrayList<>();
     public static List<Bomb> bombList = new ArrayList<>();
     public static ArrayList<Flame> flames = new ArrayList<>();
@@ -185,7 +185,7 @@ public class Main extends Application {
             }
 
             if (!player.isDead()) {
-                for (Enemy enemy : enemies) {
+                for (Character enemy : enemies) {
                     if (Collision.isCollision(enemy, player)) {
                         player.setDead(true);
                         player.dead();

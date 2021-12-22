@@ -6,8 +6,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
-public class Balloom extends Enemy {
-    private int step = 0;
+public class Balloom extends Character {
+    protected int direction = 0;
 
     public Balloom() {
         super();
@@ -17,16 +17,13 @@ public class Balloom extends Enemy {
     }
 
     public Balloom(int x, int y) {
-        super();
-        setX(x);
-        setY(y);
+        super(x, y);
         loadImage("balloom.png");
         speed = 0.025;
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
-    @Override
     public void move() {
         switch (direction) {
             case 0:
@@ -63,7 +60,7 @@ public class Balloom extends Enemy {
                 return true;
             }
         }
-        for (Enemy otherEnemy : Main.enemies) {
+        for (Character otherEnemy : Main.enemies) {
             if (otherEnemy != this && Collision.isCollision(this, otherEnemy)) {
                 return true;
             }

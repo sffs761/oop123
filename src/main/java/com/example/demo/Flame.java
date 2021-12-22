@@ -2,14 +2,11 @@ package com.example.demo;
 
 import javafx.animation.AnimationTimer;
 
-public class Flame extends Entity {
+public class Flame extends DynamicObject {
     private String direction;
-    private int step = 0;
 
     public Flame(String direction, int x, int y) {
-        super();
-        setX(x);
-        setY(y);
+        super(x, y);
         this.direction = direction;
     }
 

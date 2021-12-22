@@ -17,36 +17,6 @@ public abstract class Entity {
         texture = null;
     }
 
-    public void loadImage(String filePath) {
-        try {
-            texture = new Image(Objects.requireNonNull(
-                    this.getClass().getResource(filePath)).toExternalForm(),
-                    Main.SCALE, Main.SCALE, true, true);
-            frame.setWidth(texture.getWidth());
-            frame.setHeight(texture.getHeight());
-        } catch (Exception e) {
-            System.out.println("Fatal Error!!!");
-            System.out.println("Can't load: " + filePath);
-        }
-    }
-
-    public void render() {
-        imageView = new ImageView(texture);
-        imageView.setX(frame.getX());
-        imageView.setY(frame.getY());
-        Main.gRenderer.getChildren().add(imageView);
-    }
-
-    public void update() {
-        imageView.setX(frame.getX());
-        imageView.setY(frame.getY());
-        imageView.setImage(texture);
-    }
-
-    public void remove() {
-        imageView.setImage(null);
-    }
-
     public Rectangle getFrame() {
         return frame;
     }
@@ -81,6 +51,36 @@ public abstract class Entity {
 
     public void setWidth(int width) {
         frame.setWidth(width);
+    }
+
+    public void loadImage(String filePath) {
+        try {
+            texture = new Image(Objects.requireNonNull(
+                    this.getClass().getResource(filePath)).toExternalForm(),
+                    Main.SCALE, Main.SCALE, true, true);
+            frame.setWidth(texture.getWidth());
+            frame.setHeight(texture.getHeight());
+        } catch (Exception e) {
+            System.out.println("Fatal Error!!!");
+            System.out.println("Can't load: " + filePath);
+        }
+    }
+
+    public void render() {
+        imageView = new ImageView(texture);
+        imageView.setX(frame.getX());
+        imageView.setY(frame.getY());
+        Main.gRenderer.getChildren().add(imageView);
+    }
+
+    public void update() {
+        imageView.setX(frame.getX());
+        imageView.setY(frame.getY());
+        imageView.setImage(texture);
+    }
+
+    public void remove() {
+        imageView.setImage(null);
     }
 
 }

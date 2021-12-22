@@ -2,19 +2,15 @@ package com.example.demo;
 
 import javafx.animation.AnimationTimer;
 
-public class Brick extends Entity {
-    private int step;
-
+public class Brick extends DynamicObject {
     public Brick() {
         super();
         loadImage("brick.png");
     }
 
     public Brick(int x, int y) {
-        super();
+        super(x, y);
         loadImage("brick.png");
-        setX(x);
-        setY(y);
     }
 
     private void stepDestroy() {

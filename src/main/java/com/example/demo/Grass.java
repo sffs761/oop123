@@ -1,16 +1,12 @@
 package com.example.demo;
 
-public class Grass extends Entity {
+public class Grass extends StaticEntity {
     public Grass() {
-        super();
-        loadImage("grass.png");
+        super("grass");
     }
 
     public Grass(int x, int y) {
-        super();
-        loadImage("grass.png");
-        setX(x);
-        setY(y);
+        super(x, y, "grass");
     }
 
 }
