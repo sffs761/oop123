@@ -15,16 +15,15 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Main extends Application {
-    public static void main(String[ ] args) {
+    public static void main(String[] args) {
         launch(args);
     }
-
-    //constant attitudes
+    // Constant Atributes
     public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
-    public static final int SCREEN_WIDTH = 320;
-    public static final int SCREEN_HEIGHT = 240;
     public static final int SCALE = 16;
+    public static final int SCREEN_WIDTH = SCALE * WIDTH;
+    public static final int SCREEN_HEIGHT = SCALE * HEIGHT;
     //main pane
     public static AnchorPane gRenderer = new AnchorPane();
     //list of entities
@@ -34,7 +33,6 @@ public class Main extends Application {
     public static List<Brick> bricks = new ArrayList<>();
     public static List<Bomb> bombList = new ArrayList<>();
     public static ArrayList<Flame> flames = new ArrayList<>();
-
     public void readMap(String filePath) {
         try {
             File file = new File(filePath);
@@ -93,75 +91,75 @@ public class Main extends Application {
     AnimationTimer gamePlay = new AnimationTimer() {
         @Override
         public void handle(long now) {
-            for (Flame flame : flames) {
-                for (int i = 0; i < enemies.size(); i++) {
-                    if (Collision.isCollision(flame, enemies.get(i))) {
-                        enemies.get(i).dead();
-                        enemies.remove(i);
-                    }
+        for (Flame flame : flames) {
+            for (int i = 0; i < enemies.size(); i++) {
+                if (Collision.isCollision(flame, enemies.get(i))) {
+                    enemies.get(i).dead();
+                    enemies.remove(i);
                 }
-                for (int i = 0; i < bricks.size(); i++) {
-                    if (Collision.isCollision(flame, bricks.get(i))) {
-                        bricks.get(i).destroy();
-                        bricks.remove(i);
-                    }
+            }
+            for (int i = 0; i < bricks.size(); i++) {
+                if (Collision.isCollision(flame, bricks.get(i))) {
+                    bricks.get(i).destroy();
+                    bricks.remove(i);
                 }
-                if (Collision.isCollision(flame, player)) {
-                    player.dead();
-
-                }
-//                for (int i = 0; i < bombList.size(); i++) {
-//                    if (Collision.isDuplicate(flame, bombList.get(i))) {
-//                        bombList.get(i).trigger();
-//                    }
+            }
+            if (Collision.isCollision(flame, player)) {
+                player.setDead(true);
+                player.dead();
+            }
+//            for (int i = 0; i < bombList.size(); i++) {
+//                if (Collision.isDuplicate(flame, bombList.get(i))) {
+//                    bombList.get(i).trigger();
 //                }
-            }
-            for (Bomb bomb : bombList) {
-                if (Collision.isCollision(player, bomb) && bomb.isWalkAble()) {
-                    if (!Collision.isCollision(player, bomb)){
-                        bomb.setWalkAble(false);
-                    }
+//            }
+        }
+        for (Bomb bomb : bombList) {
+            if (Collision.isCollision(player, bomb) && bomb.isWalkAble()) {
+                if (!Collision.isCollision(player, bomb)){
+                    bomb.disableWalkability();
                 }
             }
+        }
         }
     };
 
     @Override
     public void start(Stage primaryStage) {
-
-        primaryStage.setTitle("Bomber man");
+        primaryStage.setTitle("Bomberman");
         Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
         readMap("level1.txt");
         render();
         gRenderer.requestFocus();
         primaryStage.setScene(scene);
         primaryStage.show();
-
         gamePlay.start();
-
         gRenderer.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode() == KeyCode.D) {
-                    //System.out.println(bombList.size());
+                //                if (keyEvent.getCode() == KeyCode.D) {
+                //                    System.out.println(bombList.size());
+                //                }
+                if (!player.isDead()) {
+                    player.handleEvent(keyEvent);
                 }
-                player.handleEvent(keyEvent);
             }
         });
-
         gRenderer.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode() == KeyCode.UP) {
-                    player.loadImage("player_up_0.png");
-                } else if (keyEvent.getCode() == KeyCode.DOWN) {
-                    player.loadImage("player_down_0.png");
-                } else if (keyEvent.getCode() == KeyCode.LEFT) {
-                    player.loadImage("player_left_0.png");
-                } else if (keyEvent.getCode() == KeyCode.RIGHT) {
-                    player.loadImage("player_right_0.png");
+                if (!player.isDead()) {
+                    if (keyEvent.getCode() == KeyCode.UP) {
+                        player.loadImage("player_up_0.png");
+                    } else if (keyEvent.getCode() == KeyCode.DOWN) {
+                        player.loadImage("player_down_0.png");
+                    } else if (keyEvent.getCode() == KeyCode.LEFT) {
+                        player.loadImage("player_left_0.png");
+                    } else if (keyEvent.getCode() == KeyCode.RIGHT) {
+                        player.loadImage("player_right_0.png");
+                    }
+                    player.update();
                 }
-                player.update();
             }
         });
     }

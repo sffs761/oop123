@@ -10,6 +10,7 @@ import java.util.List;
 public class Bomber extends Entity {
     private int speed;
     private int step = 0;
+    private boolean isDead = false;
 
     public Bomber() {
         super();
@@ -37,7 +38,7 @@ public class Bomber extends Entity {
             }
             loadImage("player_up_" + step + ".png");
         } else if (event.getCode() == KeyCode.DOWN) {
-            if (frame.getY() + frame.getHeight() < Main.SCALE * Main.HEIGHT) {
+            if (frame.getY() + frame.getHeight() < Main.SCREEN_HEIGHT) {
                 frame.setY(frame.getY() + speed);
             }
             loadImage("player_down_" + step + ".png");
@@ -47,7 +48,7 @@ public class Bomber extends Entity {
             }
             loadImage("player_left_" + step + ".png");
         } else if (event.getCode() == KeyCode.RIGHT) {
-            if (frame.getX() + frame.getWidth() < Main.SCALE * Main.WIDTH) {
+            if (frame.getX() + frame.getWidth() < Main.SCREEN_WIDTH) {
                 frame.setX(frame.getX() + speed);
             }
             loadImage("player_right_" + step + ".png");
@@ -112,4 +113,13 @@ public class Bomber extends Entity {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
 }

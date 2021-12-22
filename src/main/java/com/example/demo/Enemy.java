@@ -21,4 +21,5 @@ public abstract class Enemy extends Entity {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
+
 }

@@ -12,4 +12,5 @@ public class Wall extends Entity{
         setX(x);
         setY(y);
     }
+
 }

@@ -28,7 +28,7 @@ public class Balloom extends Enemy {
                 }
                 break;
             case 1:
-                if (frame.getY() + frame.getHeight() < 240) {
+                if (frame.getY() + frame.getHeight() < Main.SCREEN_HEIGHT) {
                     frame.setY(frame.getY() + speed);
                 }
                 break;
@@ -38,7 +38,7 @@ public class Balloom extends Enemy {
                 }
                 break;
             case 3:
-                if (frame.getX() + frame.getWidth() < 320) {
+                if (frame.getX() + frame.getWidth() < Main.SCREEN_WIDTH) {
                     frame.setX(frame.getX() + speed);
                 }
                 break;
@@ -105,4 +105,5 @@ public class Balloom extends Enemy {
         balloomMove.stop();
         dead.start();
     }
+
 }

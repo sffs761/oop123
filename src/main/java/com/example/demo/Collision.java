@@ -1,7 +1,6 @@
 package com.example.demo;
 
 public class Collision {
-
     private static boolean verticalCollision(int topA, int bottomA, int topB, int bottomB) {
         return (bottomA > topB && bottomA < bottomB) || (bottomB > topA && bottomB < bottomA);
     }
@@ -24,10 +23,12 @@ public class Collision {
         return (verticalCollision(topA, bottomA, topB, bottomB)
                 && horizontalCollision(leftA, rightA, leftB, rightB))
                 || (verticalCollision(topA, bottomA, topB, bottomB) && leftA == leftB)
-                || (horizontalCollision(leftA, rightA, leftB, rightB) && topA == topB);
+                || (horizontalCollision(leftA, rightA, leftB, rightB) && topA == topB)
+                || isDuplicate(entityA, entityB);
     }
 
     public static boolean isDuplicate(Entity entityA, Entity entityB) {
         return entityA.getX() == entityB.getX() && entityB.getY() == entityA.getY();
     }
+
 }

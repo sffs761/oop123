@@ -14,8 +14,8 @@ public class Bomb extends Entity {
         return walkAble;
     }
 
-    public void setWalkAble(boolean walkAble) {
-        this.walkAble = walkAble;
+    public void disableWalkability() {
+        walkAble = false;
     }
 
     public Bomb() {
@@ -25,18 +25,18 @@ public class Bomb extends Entity {
     }
 
     public void stepBomb() {
-        loadImage("bomb_" + ((int) step / 200) + ".png");
+        loadImage("bomb_" + ((int) step / 100) + ".png");
         step++;
         update();
     }
 
     AnimationTimer timerBomb = new AnimationTimer() {
         @Override
-        public void handle(long l) {
-            if (step < 600) {
+            public void handle(long l) {
+            if (step < 300) {
                 stepBomb();
             }
-            if (step == 600) {
+            if (step == 300) {
                 trigger();
             }
         }
@@ -54,7 +54,7 @@ public class Bomb extends Entity {
     }
 
     public void stepExplode() {
-        loadImage("bomb_exploded" + ((int) step / 100) + ".png");
+        loadImage("bomb_exploded" + ((int) step / 50) + ".png");
         step++;
         update();
     }
@@ -66,10 +66,10 @@ public class Bomb extends Entity {
     AnimationTimer timer = new AnimationTimer() {
         @Override
         public void handle(long l) {
-            if (step < 300) {
+            if (step < 150) {
                 stepExplode();
             }
-            if (step == 300) {
+            if (step == 150) {
                 removeBomb();
                 for (Flame flame : currentFlames) {
                     Main.flames.remove(flame);
@@ -83,11 +83,13 @@ public class Bomb extends Entity {
     public void explode() {
         step = 0;
         timerBomb.start();
+
         currentFlames.add(new Flame("mid", getX(), getY()));
+
         boolean skip = false;
         for (int i = 1; i < radius; i++) {
             for (Wall wall : Main.walls) {
-                if (wall.getX() == this.getX() && wall.getY() == this.getY() + 16 * i) {
+                if (wall.getX() == this.getX() && wall.getY() + Main.SCALE * i == this.getY()) {
                     skip = true;
                     break;
                 }
@@ -95,9 +97,11 @@ public class Bomb extends Entity {
             if (skip) {
                 break;
             }
-            currentFlames.add(new Flame("vertical", getX(), getY() + 16 * i));
+            Flame newFlame = new Flame("vertical", getX(), getY() - Main.SCALE * i);
+            currentFlames.add(newFlame);
             for (Brick brick : Main.bricks) {
-                if (brick.getX() == this.getX() && brick.getY() == this.getY() + 16 * i) {
+                if (brick.getX() == this.getX() && brick.getY() + Main.SCALE * i == this.getY()) {
+                    newFlame.setDirection("");
                     skip = true;
                     break;
                 }
@@ -108,19 +112,33 @@ public class Bomb extends Entity {
         }
         if (!skip) {
             for (Wall wall : Main.walls) {
-                if (wall.getX() == this.getX() && wall.getY() == this.getY() + 16 * radius) {
+                if (wall.getX() == this.getX() && wall.getY() + Main.SCALE * radius
+                        == this.getY()) {
                     skip = true;
                     break;
                 }
             }
             if (!skip) {
-                currentFlames.add(new Flame("vertical_down_last", getX(),getY() + 16 * radius));
+                Flame newFlame = new Flame("vertical_top_last", getX(), getY() - Main.SCALE
+                        * radius);
+                currentFlames.add(newFlame);
+                for (Brick brick: Main.bricks) {
+                    if (brick.getX() == this.getX() && brick.getY() + Main.SCALE * radius == this.getY()) {
+                        newFlame.setDirection("");
+                        break;
+                    }
+                }
             }
         }
+
+
+
+
+
         skip = false;
         for (int i = 1; i < radius; i++) {
             for (Wall wall : Main.walls) {
-                if (wall.getX() == this.getX() && wall.getY() == this.getY() - 16 * i) {
+                if (wall.getX() == this.getX() && wall.getY() - Main.SCALE * i == this.getY()) {
                     skip = true;
                     break;
                 }
@@ -128,9 +146,11 @@ public class Bomb extends Entity {
             if (skip) {
                 break;
             }
-            currentFlames.add(new Flame("vertical", getX(), getY() - 16 * i));
+            Flame newFlame = new Flame("vertical", getX(), getY() + Main.SCALE * i);
+            currentFlames.add(newFlame);
             for (Brick brick : Main.bricks) {
-                if (brick.getX() == this.getX() && brick.getY() == this.getY() - 16 * i) {
+                if (brick.getX() == this.getX() && brick.getY() - Main.SCALE * i == this.getY()) {
+                    newFlame.setDirection("");
                     skip = true;
                     break;
                 }
@@ -139,21 +159,36 @@ public class Bomb extends Entity {
                 break;
             }
         }
+
         if (!skip) {
             for (Wall wall : Main.walls) {
-                if (wall.getX() == this.getX() && wall.getY() == this.getY() - 16 * radius) {
+                if (wall.getX() == this.getX() && wall.getY() - Main.SCALE * radius
+                        == this.getY()) {
                     skip = true;
                     break;
                 }
             }
             if (!skip) {
-                currentFlames.add(new Flame("vertical_top_last", getX(), getY() - 16 * radius));
+                Flame newFlame = new Flame("vertical_down_last", getX(),getY() + Main.SCALE
+                        * radius);
+                currentFlames.add(newFlame);
+                for (Brick brick: Main.bricks) {
+                    if (brick.getX() == this.getX() && brick.getY() - Main.SCALE * radius == this.getY()) {
+                        newFlame.setDirection("");
+                        break;
+                    }
+                }
             }
         }
+
+
+
+
+
         skip = false;
         for (int i = 1; i < radius; i++) {
             for (Wall wall : Main.walls) {
-                if (wall.getX() - 16 * i == this.getX() && wall.getY() == this.getY()) {
+                if (wall.getX() + Main.SCALE * i == this.getX() && wall.getY() == this.getY()) {
                     skip = true;
                     break;
                 }
@@ -161,9 +196,11 @@ public class Bomb extends Entity {
             if (skip) {
                 break;
             }
-            currentFlames.add(new Flame("horizontal", getX() + 16 * i, getY()));
+            Flame newFlame = new Flame("horizontal", getX() - Main.SCALE * i, getY());
+            currentFlames.add(newFlame);
             for (Brick brick : Main.bricks) {
-                if (brick.getX() == this.getX() + 16 * i && brick.getY() == this.getY()) {
+                if (brick.getX() + Main.SCALE * i == this.getX() && brick.getY() == this.getY()) {
+                    newFlame.setDirection("");
                     skip = true;
                     break;
                 }
@@ -174,19 +211,32 @@ public class Bomb extends Entity {
         }
         if (!skip) {
             for (Wall wall : Main.walls) {
-                if (wall.getX() == this.getX() + 16 * radius && wall.getY() == this.getY()) {
+                if (wall.getX() + Main.SCALE * radius == this.getX() && wall.getY() == this.getY()) {
                     skip = true;
                     break;
                 }
             }
             if (!skip) {
-                currentFlames.add(new Flame("horizontal_right_last", getX() + 16 * radius, getY()));
+                Flame newFlame = new Flame("horizontal_left_last", getX() - Main.SCALE * radius
+                        , getY());
+                currentFlames.add(newFlame);
+                for (Brick brick: Main.bricks) {
+                    if (brick.getX() + Main.SCALE * radius == this.getX() && brick.getY() == this.getY()) {
+                        newFlame.setDirection("");
+                        break;
+                    }
+                }
             }
         }
+
+
+
+
+
         skip = false;
         for (int i = 1; i < radius; i++) {
             for (Wall wall : Main.walls) {
-                if (wall.getX() + 16 * i == this.getX() && wall.getY() == this.getY()) {
+                if (wall.getX() - Main.SCALE * i == this.getX() && wall.getY() == this.getY()) {
                     skip = true;
                     break;
                 }
@@ -194,9 +244,11 @@ public class Bomb extends Entity {
             if (skip) {
                 break;
             }
-            currentFlames.add(new Flame("horizontal", getX() - 16 * i, getY()));
+            Flame newFlame = new Flame("horizontal", getX() + Main.SCALE * i, getY());
+            currentFlames.add(newFlame);
             for (Brick brick : Main.bricks) {
-                if (brick.getX() == this.getX() - 16 * i && brick.getY() == this.getY()) {
+                if (brick.getX() - Main.SCALE * i == this.getX() && brick.getY() == this.getY()) {
+                    newFlame.setDirection("");
                     skip = true;
                     break;
                 }
@@ -207,14 +259,24 @@ public class Bomb extends Entity {
         }
         if (!skip) {
             for (Wall wall : Main.walls) {
-                if (wall.getX() == this.getX() - 16 * radius && wall.getY() == this.getY()) {
+                if (wall.getX() - Main.SCALE * radius == this.getX() && wall.getY() == this.getY()) {
                     skip = true;
                     break;
                 }
             }
             if (!skip) {
-                currentFlames.add(new Flame("horizontal_left_last", getX() - 16 * radius, getY()));
+                Flame newFlame = new Flame("horizontal_right_last", getX() + Main.SCALE * radius
+                        , getY());
+                currentFlames.add(newFlame);
+                for (Brick brick: Main.bricks) {
+                    if (brick.getX() - Main.SCALE * radius == this.getX() && brick.getY() == this.getY()) {
+                        newFlame.setDirection("");
+                        break;
+                    }
+                }
             }
         }
+
     }
+
 }

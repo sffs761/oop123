@@ -5,4 +5,5 @@ public class Grass extends Entity {
         super();
         loadImage("grass.png");
     }
+
 }

@@ -47,7 +47,6 @@ public abstract class Entity {
         imageView.setImage(null);
     }
 
-
     public Rectangle getFrame() {
         return frame;
     }
@@ -83,4 +82,5 @@ public abstract class Entity {
     public void setWidth(int width) {
         frame.setWidth(width);
     }
+
 }
