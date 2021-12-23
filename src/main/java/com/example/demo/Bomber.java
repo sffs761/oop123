@@ -1,6 +1,11 @@
 package com.example.demo;
 
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -128,6 +133,38 @@ public class Bomber extends Character {
             if (step == 90) {
                 remove();
                 dead.stop();
+                if (Main.lives > 0) {
+                    Main.gamePlay.stop();
+                    Main.removeRender();
+                    Main.render();
+                    Main.gamePlay.start();
+                    Main.time = 200;
+                    Main.lives--;
+                    Main.livesLabel.setText("Lives: " + Main.lives);
+                } else {
+                    try {
+                        Parent gameOver = FXMLLoader.load(this.getClass()
+                                .getResource("gameOver.fxml"));
+                        Scene gameOverScene = new Scene(gameOver);
+                        Main.changScene(gameOverScene);
+                        gameOver.requestFocus();
+                        gameOver.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                            @Override
+                            public void handle(KeyEvent keyEvent) {
+                                Main.changScene(Main.gameplayScene);
+                                Main.gamePlay.stop();
+                                Main.removeRender();
+                                Main.render();
+                                Main.gamePlay.start();
+                                Main.time = 200;
+                                Main.lives = 2;
+                                Main.livesLabel.setText("Lives: " + Main.lives);
+                            }
+                        });
+                    } catch(Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
             }
         }
     };

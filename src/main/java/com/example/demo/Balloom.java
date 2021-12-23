@@ -6,7 +6,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
-public class Balloom extends Character {
+public class Balloom extends Enemy {
     protected int direction = 0;
 
     public Balloom() {
@@ -149,5 +149,9 @@ public class Balloom extends Character {
 
     public void stopAnimation() {
         timeline.stop();
+    }
+
+    public void startAnimation() {
+        timeline.play();
     }
 }

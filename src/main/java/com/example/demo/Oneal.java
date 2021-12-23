@@ -6,7 +6,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
-public class Oneal extends Character {
+public class Oneal extends Enemy {
     protected int direction = 0;
 
     public Oneal() {

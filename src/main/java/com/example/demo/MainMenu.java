@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 
 import java.util.Objects;
 
-public class MainMenu{
+public class MainMenu {
 
     @FXML
     public ImageView musicCheck;
@@ -23,9 +23,6 @@ public class MainMenu{
         musicCheck.setImage(new Image(Objects.requireNonNull(
                 this.getClass().getResource(musicChecked ? "bomb_0.png" : "none.png" )).toExternalForm(),
                 Main.SCALE, Main.SCALE, true, true));
-
-        System.out.println("music ");
-        System.out.println(musicChecked ? "on" : "off");
     }
 
     public void sound() {
@@ -33,8 +30,5 @@ public class MainMenu{
         soundCheck.setImage(new Image(Objects.requireNonNull(
                 this.getClass().getResource(soundChecked ? "bomb_0.png" : "none.png" )).toExternalForm(),
                 Main.SCALE, Main.SCALE, true, true));
-
-        System.out.println("sound");
-        System.out.println(soundChecked ? "on" : "off");
     }
 }

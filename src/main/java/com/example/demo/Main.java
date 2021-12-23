@@ -1,6 +1,9 @@
 package com.example.demo;
 
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +17,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,7 +46,7 @@ public class Main extends Application {
     public static List<Wall> walls = new ArrayList<>();
     public static List<Grass> grasses = new ArrayList<>();
     public static Bomber player = new Bomber();
-    public static List<Character> enemies = new ArrayList<>();
+    public static List<Enemy> enemies = new ArrayList<>();
     public static List<Brick> bricks = new ArrayList<>();
     public static List<Bomb> bombList = new ArrayList<>();
     public static ArrayList<Flame> flames = new ArrayList<>();
@@ -51,8 +55,20 @@ public class Main extends Application {
     public static List<FlameItem> flameItems = new ArrayList<>();
     public static List<BombItem> bombItems = new ArrayList<>();
 
+    public static int time = 10;
+    public static Label timeLabel = new Label();
+
     public static int score;
     public static Label scoreLabel = new Label();
+
+    public static int lives = 2;
+    public static Label livesLabel = new Label();
+
+    public static Stage stage;
+
+    public static Scene mainMenu;
+
+    public static Scene gameplayScene;
 
     public void readMap(String filePath) {
         try {
@@ -86,7 +102,7 @@ public class Main extends Application {
         }
     }
 
-    public void render() {
+    public static void render() {
         ArrayList<Integer> existedEntityIndexes = new ArrayList<>();
 
         int k = (int) (Math.random() * grasses.size());
@@ -105,46 +121,10 @@ public class Main extends Application {
         existedEntityIndexes.add(k);
 
         for (int i = 0; i < 3; i++) {
-<<<<<<< Updated upstream
-=======
             int j = (int) (Math.random() * grasses.size());
             while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
                     && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
                     && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
-<<<<<<< HEAD
-=======
-                j = (int) (Math.random() * grasses.size());
-            };
-            switch ((int) (Math.random() * 3)) {
-                case 0:
-                    SpeedItem speedItem = new SpeedItem(grasses.get(j).getX(), grasses.get(j).getY());
-                    Main.speedItems.add(speedItem);
-                    speedItem.render();
-                    break;
-                case 1:
-                    FlameItem flameItem = new FlameItem(grasses.get(j).getX(), grasses.get(j).getY());
-                    Main.flameItems.add(flameItem);
-                    flameItem.render();
-                    break;
-                case 2:
-                    BombItem bombItem = new BombItem(grasses.get(j).getX(), grasses.get(j).getY());
-                    Main.bombItems.add(bombItem);
-                    bombItem.render();
-                    break;
-            }
-            Brick itemBrick = new Brick(grasses.get(j).getX(), grasses.get(j).getY());
-            bricks.add(itemBrick);
-            itemBrick.render();
-            existedEntityIndexes.add(j);
-        }
-
-        for (int i = 0; i < 46; i ++) {
->>>>>>> Stashed changes
-            int j = (int) (Math.random() * grasses.size());
-            while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
-                    && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
-                    && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
-<<<<<<< Updated upstream
                 j = (int) (Math.random() * grasses.size());
             };
             switch ((int) (Math.random() * 3)) {
@@ -175,9 +155,36 @@ public class Main extends Application {
             while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
                     && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
                     && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
-=======
->>>>>>> 4097f0ec9738825af23dbf5773d3b6ff2939c69d
->>>>>>> Stashed changes
+                j = (int) (Math.random() * grasses.size());
+            };
+            switch ((int) (Math.random() * 3)) {
+                case 0:
+                    SpeedItem speedItem = new SpeedItem(grasses.get(j).getX(), grasses.get(j).getY());
+                    Main.speedItems.add(speedItem);
+                    speedItem.render();
+                    break;
+                case 1:
+                    FlameItem flameItem = new FlameItem(grasses.get(j).getX(), grasses.get(j).getY());
+                    Main.flameItems.add(flameItem);
+                    flameItem.render();
+                    break;
+                case 2:
+                    BombItem bombItem = new BombItem(grasses.get(j).getX(), grasses.get(j).getY());
+                    Main.bombItems.add(bombItem);
+                    bombItem.render();
+                    break;
+            }
+            Brick itemBrick = new Brick(grasses.get(j).getX(), grasses.get(j).getY());
+            bricks.add(itemBrick);
+            itemBrick.render();
+            existedEntityIndexes.add(j);
+        }
+
+        for (int i = 0; i < 46; i ++) {
+            int j = (int) (Math.random() * grasses.size());
+            while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
+                    && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
+                    && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
                 j = (int) (Math.random() * grasses.size());
             };
             Brick newBrick = new Brick(grasses.get(j).getX(), grasses.get(j).getY());
@@ -211,20 +218,20 @@ public class Main extends Application {
 
     }
 
-    public void removeRender() {
+    public static void removeRender() {
         player.remove();
         portal.remove();
         while (!speedItems.isEmpty()) {
-            speedItems.get(bricks.size() - 1).remove();
-            speedItems.remove(bricks.size() - 1);
+            speedItems.get(speedItems.size() - 1).remove();
+            speedItems.remove(speedItems.size() - 1);
         }
         while (!flameItems.isEmpty()) {
-            flameItems.get(bricks.size() - 1).remove();
-            flameItems.remove(bricks.size() - 1);
+            flameItems.get(flameItems.size() - 1).remove();
+            flameItems.remove(flameItems.size() - 1);
         }
         while (!bombItems.isEmpty()) {
-            bombItems.get(bricks.size() - 1).remove();
-            bombItems.remove(bricks.size() - 1);
+            bombItems.get(bombItems.size() - 1).remove();
+            bombItems.remove(bombItems.size() - 1);
         }
         while (!bricks.isEmpty()) {
             bricks.get(bricks.size() - 1).remove();
@@ -237,7 +244,7 @@ public class Main extends Application {
         }
     }
 
-    public boolean containsBrick(Entity entity) {
+    public static boolean containsBrick(Entity entity) {
         for (Brick brick : bricks) {
             if (Collision.isDuplicate(brick, entity)) {
                 return true;
@@ -246,9 +253,22 @@ public class Main extends Application {
         return false;
     }
 
-    AnimationTimer gamePlay = new AnimationTimer() {
+    public static Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+        time--;
+        if (time >= 0) {
+            timeLabel.setText("Time: " + time);
+        }
+    }));
+
+    public static AnimationTimer gamePlay = new AnimationTimer() {
         @Override
         public void handle(long now) {
+            if (time == 0) {
+                player.setDead(true);
+//                timeline.stop();
+                player.dead();
+            }
+
             for (Flame flame : flames) {
                 for (int i = 0; i < enemies.size(); i++) {
                     if (Collision.isCollision(flame, enemies.get(i))) {
@@ -294,7 +314,7 @@ public class Main extends Application {
                 }
             }
 
-            if (!player.isDead()) {
+            if (player.isRendered() && !player.isDead()) {
                 for (Character enemy : enemies) {
                     if (Collision.isCollision(enemy, player)) {
                         player.setDead(true);
@@ -308,8 +328,6 @@ public class Main extends Application {
                     System.out.println("OK");
                 }
             }
-
-
 
             for (int i = 0; i < speedItems.size(); i++) {
                 if (player.isRendered()) {
@@ -351,39 +369,18 @@ public class Main extends Application {
 
     };
 
+    public static void changScene(Scene scene) {
+        stage.setScene(scene);
+    }
+
     @Override
     public void start(Stage primaryStage) {
+        stage = primaryStage;
         primaryStage.setTitle("Bomberman");
-        Scene mainMenu;
-<<<<<<< HEAD
-        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + SCALE);
-
-=======
-<<<<<<< Updated upstream
-        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + UI);
-<<<<<<< Updated upstream
+        gameplayScene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + SCALE);
         readMap("PreRenderedMap.txt");
         preRender();
 //        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-=======
-<<<<<<< HEAD
-        
->>>>>>> 7797f530a2f354f81b7a591f22194a87ef5ddfb6
-
-        readMap("PreRenderedMap.txt");
-        preRender();
-
-=======
-        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-        readMap("PreRenderedMap.txt");
-        preRender();
->>>>>>> Stashed changes
-=======
-        readMap("PreRenderedMap.txt");
-        preRender();
-//        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
->>>>>>> 4097f0ec9738825af23dbf5773d3b6ff2939c69d
->>>>>>> Stashed changes
         try {
             Parent menu = FXMLLoader.load(this.getClass().getResource("main-menu.fxml"));
             mainMenu = new Scene(menu);
@@ -392,9 +389,12 @@ public class Main extends Application {
             menu.setOnKeyPressed(new EventHandler<KeyEvent>() {
                 @Override
                 public void handle(KeyEvent keyEvent) {
-                    primaryStage.setScene(scene);
-                    primaryStage.setX((mainMenu.getX() + mainMenu.getWidth() / 2));
-
+                    if (primaryStage.getScene() == mainMenu) {
+                        primaryStage.setScene(gameplayScene);
+                        // primaryStage.setX(mainMenu.getX() + mainMenu.getWidth() / 2);
+                        timeline.setCycleCount(Animation.INDEFINITE);
+                        timeline.play();
+                    }
                 }
             });
         }
@@ -405,14 +405,33 @@ public class Main extends Application {
         gRenderer.requestFocus();
         //primaryStage.setScene(scene);
         primaryStage.show();
-        scoreLabel.setText("score: " + score);
-        scoreLabel.setLayoutX(40);
-        scoreLabel.setLayoutY(SCREEN_HEIGHT + 5);
-        scoreLabel.setScaleX(2);
-        scoreLabel.setScaleY(2);
+
+        timeLabel.setText("Time: " + time);
+        timeLabel.setLayoutX(SCALE);
+        timeLabel.setLayoutX(SCALE);
+        timeLabel.setLayoutY(SCREEN_HEIGHT + SCALE / 8);
+        timeLabel.setScaleX(SCALE / 20);
+        timeLabel.setScaleY(SCALE / 20);
+        gRenderer.getChildren().add(timeLabel);
+
+        scoreLabel.setText("Score: " + score);
+        scoreLabel.setLayoutX(SCALE * 5);
+        scoreLabel.setLayoutY(SCREEN_HEIGHT + SCALE / 8);
+        scoreLabel.setScaleX(SCALE / 20);
+        scoreLabel.setScaleY(SCALE / 20);
         gRenderer.getChildren().add(scoreLabel);
 
+        livesLabel.setText("Lives: " + lives);
+        livesLabel.setLayoutX(SCALE * 10);
+        livesLabel.setLayoutY(SCREEN_HEIGHT + SCALE / 8);
+        livesLabel.setScaleX(SCALE / 20);
+        livesLabel.setScaleY(SCALE / 20);
+        gRenderer.getChildren().add(livesLabel);
+
         gamePlay.start();
+
+        final boolean[] isPLaying = {true};
+
         gRenderer.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -422,10 +441,34 @@ public class Main extends Application {
                         removeRender();
                         render();
                         gamePlay.start();
+                        if (timeline.getStatus() != Animation.Status.RUNNING) {
+                            timeline.play();
+                        }
+                        if (!isPLaying[0]) {
+                            isPLaying[0] = true;
+                        }
                     }
                 }
 
-                if (player.isRendered() && !player.isDead()) {
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    if (isPLaying[0]) {
+                        gamePlay.stop();
+                        for (Enemy enemy : enemies) {
+                            ((Balloom) enemy).stopAnimation();
+                        }
+                        timeline.pause();
+                        isPLaying[0] = false;
+                    } else {
+                        gamePlay.start();
+                        for(Enemy enemy : enemies) {
+                            ((Balloom) enemy).startAnimation();
+                        }
+                        timeline.play();
+                        isPLaying[0] = true;
+                    }
+                }
+
+                if (player.isRendered() && !player.isDead() && isPLaying[0]) {
                     player.handleEvent(keyEvent);
                 }
 
@@ -435,7 +478,7 @@ public class Main extends Application {
         gRenderer.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                if (!player.isDead()) {
+                if (!player.isDead() && isPLaying[0]) {
                     if (keyEvent.getCode() == KeyCode.UP) {
                         player.loadImage("player_up_0.png");
                     } else if (keyEvent.getCode() == KeyCode.DOWN) {
