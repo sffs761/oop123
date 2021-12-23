@@ -11,6 +11,7 @@ public class Oneal extends Character {
 
     public Oneal() {
         super();
+        score = 200;
         loadImage("oneal.png");
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -18,6 +19,7 @@ public class Oneal extends Character {
 
     public Oneal(int x, int y) {
         super(x, y);
+        score = 200;
         loadImage("oneal.png");
         speed = 0.045;
         timeline.setCycleCount(Animation.INDEFINITE);

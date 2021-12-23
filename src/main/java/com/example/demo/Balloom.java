@@ -11,6 +11,7 @@ public class Balloom extends Character {
 
     public Balloom() {
         super();
+        score = 100;
         loadImage("balloom.png");
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -18,6 +19,7 @@ public class Balloom extends Character {
 
     public Balloom(int x, int y) {
         super(x, y);
+        score = 100;
         loadImage("balloom.png");
         speed = 0.025;
         timeline.setCycleCount(Animation.INDEFINITE);

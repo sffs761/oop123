@@ -27,7 +27,6 @@ public class Main extends Application {
     }
 
     // Constant Atributes
-    public static final int UI = 50;
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
     public static final int SCALE = 40;
@@ -40,7 +39,6 @@ public class Main extends Application {
 
     // list of entities
 
-    public static Label score = new Label();
     public static List<Wall> walls = new ArrayList<>();
     public static List<Grass> grasses = new ArrayList<>();
     public static Bomber player = new Bomber();
@@ -52,6 +50,9 @@ public class Main extends Application {
     public static List<SpeedItem> speedItems = new ArrayList<>();
     public static List<FlameItem> flameItems = new ArrayList<>();
     public static List<BombItem> bombItems = new ArrayList<>();
+
+    public static int score;
+    public static Label scoreLabel = new Label();
 
     public void readMap(String filePath) {
         try {
@@ -104,10 +105,46 @@ public class Main extends Application {
         existedEntityIndexes.add(k);
 
         for (int i = 0; i < 3; i++) {
+<<<<<<< Updated upstream
+=======
             int j = (int) (Math.random() * grasses.size());
             while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
                     && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
                     && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
+<<<<<<< HEAD
+=======
+                j = (int) (Math.random() * grasses.size());
+            };
+            switch ((int) (Math.random() * 3)) {
+                case 0:
+                    SpeedItem speedItem = new SpeedItem(grasses.get(j).getX(), grasses.get(j).getY());
+                    Main.speedItems.add(speedItem);
+                    speedItem.render();
+                    break;
+                case 1:
+                    FlameItem flameItem = new FlameItem(grasses.get(j).getX(), grasses.get(j).getY());
+                    Main.flameItems.add(flameItem);
+                    flameItem.render();
+                    break;
+                case 2:
+                    BombItem bombItem = new BombItem(grasses.get(j).getX(), grasses.get(j).getY());
+                    Main.bombItems.add(bombItem);
+                    bombItem.render();
+                    break;
+            }
+            Brick itemBrick = new Brick(grasses.get(j).getX(), grasses.get(j).getY());
+            bricks.add(itemBrick);
+            itemBrick.render();
+            existedEntityIndexes.add(j);
+        }
+
+        for (int i = 0; i < 46; i ++) {
+>>>>>>> Stashed changes
+            int j = (int) (Math.random() * grasses.size());
+            while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
+                    && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
+                    && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
+<<<<<<< Updated upstream
                 j = (int) (Math.random() * grasses.size());
             };
             switch ((int) (Math.random() * 3)) {
@@ -138,6 +175,9 @@ public class Main extends Application {
             while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
                     && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
                     && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
+=======
+>>>>>>> 4097f0ec9738825af23dbf5773d3b6ff2939c69d
+>>>>>>> Stashed changes
                 j = (int) (Math.random() * grasses.size());
             };
             Brick newBrick = new Brick(grasses.get(j).getX(), grasses.get(j).getY());
@@ -213,6 +253,8 @@ public class Main extends Application {
                 for (int i = 0; i < enemies.size(); i++) {
                     if (Collision.isCollision(flame, enemies.get(i))) {
                         enemies.get(i).dead();
+                        score += enemies.get(i).getScore();
+                        scoreLabel.setText("score: " + score);
                         enemies.remove(i);
                         i--;
                     }
@@ -273,6 +315,9 @@ public class Main extends Application {
                 if (player.isRendered()) {
                     if (Collision.isCollision(player, speedItems.get(i))) {
                         player.increaseSpeed();
+                        player.setX(speedItems.get(i).getX());
+                        player.setY(speedItems.get(i).getY());
+                        player.update();
                         speedItems.get(i).remove();
                         speedItems.remove(i);
                         i --;
@@ -310,10 +355,35 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Bomberman");
         Scene mainMenu;
+<<<<<<< HEAD
+        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + SCALE);
+
+=======
+<<<<<<< Updated upstream
         Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + UI);
+<<<<<<< Updated upstream
         readMap("PreRenderedMap.txt");
         preRender();
 //        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+=======
+<<<<<<< HEAD
+        
+>>>>>>> 7797f530a2f354f81b7a591f22194a87ef5ddfb6
+
+        readMap("PreRenderedMap.txt");
+        preRender();
+
+=======
+        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+        readMap("PreRenderedMap.txt");
+        preRender();
+>>>>>>> Stashed changes
+=======
+        readMap("PreRenderedMap.txt");
+        preRender();
+//        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+>>>>>>> 4097f0ec9738825af23dbf5773d3b6ff2939c69d
+>>>>>>> Stashed changes
         try {
             Parent menu = FXMLLoader.load(this.getClass().getResource("main-menu.fxml"));
             mainMenu = new Scene(menu);
@@ -335,12 +405,13 @@ public class Main extends Application {
         gRenderer.requestFocus();
         //primaryStage.setScene(scene);
         primaryStage.show();
-        score.setText("score:100");
-        score.setLayoutX(10);
-        score.setScaleX(2);
-        score.setScaleY(2);
-        gRenderer.getChildren().add(score);
-        score.setLayoutY( SCREEN_HEIGHT + 10);
+        scoreLabel.setText("score: " + score);
+        scoreLabel.setLayoutX(40);
+        scoreLabel.setLayoutY(SCREEN_HEIGHT + 5);
+        scoreLabel.setScaleX(2);
+        scoreLabel.setScaleY(2);
+        gRenderer.getChildren().add(scoreLabel);
+
         gamePlay.start();
         gRenderer.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override

@@ -10,7 +10,7 @@ public class Bomber extends Character {
     public Bomber() {
         super();
         loadImage("player.png");
-        speed = 0.5;
+        speed = 0.25;
     }
 
     public double getSpeed() {
@@ -30,7 +30,7 @@ public class Bomber extends Character {
     }
 
     public void increaseSpeed() {
-        speed += 0.1;
+        speed += 0.25;
     }
 
 

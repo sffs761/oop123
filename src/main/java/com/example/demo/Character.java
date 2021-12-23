@@ -2,6 +2,11 @@ package com.example.demo;
 
 public abstract class Character extends DynamicEntity {
     protected double speed;
+    protected int score;
+
+    public int getScore() {
+        return score;
+    }
 
     public Character() {
         super();
