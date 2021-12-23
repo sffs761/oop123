@@ -257,12 +257,18 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Bomberman");
         Scene mainMenu;
+<<<<<<< Updated upstream
         Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + UI);
         
 
         readMap("PreRenderedMap.txt");
         preRender();
 
+=======
+        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+        readMap("PreRenderedMap.txt");
+        preRender();
+>>>>>>> Stashed changes
         try {
             Parent menu = FXMLLoader.load(this.getClass().getResource("main-menu.fxml"));
             mainMenu = new Scene(menu);
