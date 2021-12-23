@@ -3,6 +3,8 @@ package com.example.demo;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -200,11 +202,33 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Bomberman");
+        Scene mainMenu;
         Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+        try {
+            Parent menu = FXMLLoader.load(this.getClass().getResource("main-menu.fxml"));
+            mainMenu = new Scene(menu);
+            primaryStage.setScene(mainMenu);
+            menu.requestFocus();
+            menu.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent keyEvent) {
+                    primaryStage.setScene(scene);
+                    primaryStage.setX((mainMenu.getX() + mainMenu.getWidth() / 2) );
+
+                }
+            });
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        //Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+
+
         readMap("level0.txt");
         render();
         gRenderer.requestFocus();
-        primaryStage.setScene(scene);
+        //primaryStage.setScene(scene);
         primaryStage.show();
         gamePlay.start();
         gRenderer.setOnKeyPressed(new EventHandler<KeyEvent>() {
