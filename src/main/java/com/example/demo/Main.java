@@ -6,9 +6,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -23,7 +27,7 @@ public class Main extends Application {
     }
 
     // Constant Atributes
-
+    public static final int UI = 50;
     public static final int WIDTH = 31;
     public static final int HEIGHT = 13;
     public static final int SCALE = 40;
@@ -36,6 +40,7 @@ public class Main extends Application {
 
     // list of entities
 
+    public static Label score = new Label();
     public static List<Wall> walls = new ArrayList<>();
     public static List<Grass> grasses = new ArrayList<>();
     public static Bomber player = new Bomber();
@@ -43,6 +48,10 @@ public class Main extends Application {
     public static List<Brick> bricks = new ArrayList<>();
     public static List<Bomb> bombList = new ArrayList<>();
     public static ArrayList<Flame> flames = new ArrayList<>();
+    public static Portal portal = new Portal();
+    public static List<SpeedItem> speedItems = new ArrayList<>();
+    public static List<FlameItem> flameItems = new ArrayList<>();
+    public static List<BombItem> bombItems = new ArrayList<>();
 
     public void readMap(String filePath) {
         try {
@@ -55,21 +64,6 @@ public class Main extends Application {
                         case '#':
                             walls.add(new Wall(j * SCALE, i * SCALE));
                             break;
-
-//                        case 'p':
-//                            player.setX(j * SCALE);
-//                            player.setY(i * SCALE);
-//                            break;
-//                        case 'e':
-//                            Balloom e = new Balloom();
-//                            e.setX(j * SCALE);
-//                            e.setY(i * SCALE);
-//                            enemies.add(e);
-//                            break;
-//                        case '*':
-//                            bricks.add(new Brick(j * SCALE, i * SCALE));
-//                            break;
-
                         default:
                             grasses.add(new Grass(j * SCALE, i * SCALE));
                             break;
@@ -81,26 +75,7 @@ public class Main extends Application {
         }
     }
 
-//    public boolean containsBrick(ArrayList<Integer> l, int x) {
-//        for (Integer i : l) {
-//            if (i == x) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
-    public void render() {
-
-//        for (int i = 0; i < WIDTH; i++) {
-//            for (int j = 0; j < HEIGHT; j++) {
-//                Grass g = new Grass();
-//                g.setX(i * SCALE);
-//                g.setY(j * SCALE);
-//                g.render();
-//            }
-//        }
-
+    public void preRender() {
         for (Wall wall : walls) {
             wall.render();
         }
@@ -108,14 +83,27 @@ public class Main extends Application {
         for (Grass grass : grasses) {
             grass.render();
         }
+    }
 
+    public void render() {
         ArrayList<Integer> existedEntityIndexes = new ArrayList<>();
 
-        for (int i = 0; i < 50; i ++) {
+        int k = (int) (Math.random() * grasses.size());
+        while (k == 0 || k == 1 || k == SCALE - 2) {
+            k = (int) (Math.random() * grasses.size());
+        };
+        portal.setFrame(new Rectangle(0, 0, 0, 0));
+        portal.setX(grasses.get(k).getX());
+        portal.setY(grasses.get(k).getY());
+        portal.render();
+        Brick portalBrick = new Brick(grasses.get(k).getX(), grasses.get(k).getY());
+        bricks.add(portalBrick);
+        portalBrick.render();
+        existedEntityIndexes.add(k);
+
+        for (int i = 0; i < 49; i ++) {
             int j = (int) (Math.random() * grasses.size());
-            while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
-                    && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
-                    && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
+            while (j == 0 || j == 1 || j == SCALE - 2 || existedEntityIndexes.contains(j)) {
                 j = (int) (Math.random() * grasses.size());
             };
             Brick newBrick = new Brick(grasses.get(j).getX(), grasses.get(j).getY());
@@ -123,24 +111,20 @@ public class Main extends Application {
             newBrick.render();
             existedEntityIndexes.add(j);
         }
-
-//        for (Enemy enemy : enemies) {
-//            enemy.render();
-//        }
-
+        if (player.getFrame() == null) {
+            player.setFrame(new Rectangle(0, 0, 0, 0));
+            if (player.isDead()) {
+                player.setDead(false);
+                player.setStep(0);
+                player.loadImage("player.png");
+            }
+        }
         player.setX(SCALE);
         player.setY(SCALE);
         player.render();
-
-//        for (Brick brick : bricks) {
-//            brick.render();
-//        }
-
         for (int i = 0; i < 6; i++) {
             int j = (int) (Math.random() * grasses.size());
-            while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
-                    && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
-                    && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
+            while (j == 0 || j == 1 || j == SCALE - 2 || existedEntityIndexes.contains(j)) {
                 j = (int) (Math.random() * grasses.size());
             };
             Balloom newBalloom = new Balloom(grasses.get(j).getX(), grasses.get(j).getY());
@@ -151,6 +135,20 @@ public class Main extends Application {
 
     }
 
+    public void removeRender() {
+        player.remove();
+        portal.remove();
+        while (!bricks.isEmpty()) {
+            bricks.get(bricks.size() - 1).remove();
+            bricks.remove(bricks.size() - 1);
+        }
+        while (!enemies.isEmpty()) {
+            ((Balloom) enemies.get(enemies.size() - 1)).stopAnimation();
+            enemies.get(enemies.size() - 1).remove();
+            enemies.remove(enemies.size() - 1);
+        }
+    }
+
     AnimationTimer gamePlay = new AnimationTimer() {
         @Override
         public void handle(long now) {
@@ -159,25 +157,34 @@ public class Main extends Application {
                     if (Collision.isCollision(flame, enemies.get(i))) {
                         enemies.get(i).dead();
                         enemies.remove(i);
+                        i--;
                     }
                 }
                 for (int i = 0; i < bricks.size(); i++) {
                     if (Collision.isCollision(flame, bricks.get(i))) {
                         bricks.get(i).destroy();
                         bricks.remove(i);
+                        i--;
                     }
                 }
                 if (Collision.isCollision(flame, player)) {
                     player.setDead(true);
                     player.dead();
                 }
-
-//                for (int i = 0; i < bombList.size(); i++) {
-//                    if (Collision.isDuplicate(flame, bombList.get(i))) {
-//                        bombList.get(i).trigger();
-//                    }
-//                }
-
+                if (Collision.isCollision(flame, portal)) {
+                    for (int i = 0; i < 6; i++) {
+                        Balloom newBalloom = new Balloom(portal.getX(), portal.getY());
+                        newBalloom.render();
+                        enemies.add(newBalloom);
+                    }
+                }
+                for (int i = 0; i < speedItems.size(); i++) {
+                    if (Collision.isCollision(flame, speedItems.get(i))) {
+                        speedItems.get(i).remove();
+                        speedItems.remove(i);
+                        i--;
+                    }
+                }
             }
 
             for (Bomb bomb : bombList) {
@@ -195,6 +202,47 @@ public class Main extends Application {
                 }
             }
 
+            if (enemies.isEmpty()) {
+                if (Collision.isCollision(player, portal)) {
+                    System.out.println("OK");
+                }
+            }
+
+
+
+            for (int i = 0; i < speedItems.size(); i++) {
+                if (player.isRendered()) {
+                    if (Collision.isCollision(player, speedItems.get(i))) {
+                        player.increaseSpeed();
+                        speedItems.get(i).remove();
+                        speedItems.remove(i);
+                        i --;
+                    }
+                }
+            }
+
+            for (int i = 0; i < flameItems.size(); i++) {
+                if (player.isRendered()) {
+                    if (Collision.isCollision(player, flameItems.get(i))) {
+                        Bomb.increaseRadius();
+                        flameItems.get(i).remove();
+                        flameItems.remove(i);
+                        i--;
+                    }
+                }
+            }
+
+            for (int i = 0; i < bombItems.size(); i++) {
+                if (player.isRendered()) {
+                    if (Collision.isCollision(player, bombItems.get(i))) {
+                        Bomb.increaseMaxBombs();
+                        bombItems.get(i).remove();
+                        bombItems.remove(i);
+                        i--;
+                    }
+                }
+            }
+
         }
 
     };
@@ -203,7 +251,15 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Bomberman");
         Scene mainMenu;
+<<<<<<< HEAD
+        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + UI);
+=======
         Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+<<<<<<< HEAD
+        readMap("PreRenderedMap.txt");
+        preRender();
+=======
+>>>>>>> 9e799b089aa82839cb3c2a2458c80520bd242df3
         try {
             Parent menu = FXMLLoader.load(this.getClass().getResource("main-menu.fxml"));
             mainMenu = new Scene(menu);
@@ -213,7 +269,7 @@ public class Main extends Application {
                 @Override
                 public void handle(KeyEvent keyEvent) {
                     primaryStage.setScene(scene);
-                    primaryStage.setX((mainMenu.getX() + mainMenu.getWidth() / 2) );
+                    primaryStage.setX((mainMenu.getX() + mainMenu.getWidth() / 2));
 
                 }
             });
@@ -226,22 +282,34 @@ public class Main extends Application {
 
 
         readMap("level0.txt");
+>>>>>>> c6f07b55495fd398a5eb5cb336b83b87fbe6891e
         render();
         gRenderer.requestFocus();
         //primaryStage.setScene(scene);
         primaryStage.show();
+        score.setText("score:100");
+        score.setLayoutX(10);
+        score.setScaleX(2);
+        score.setScaleY(2);
+        gRenderer.getChildren().add(score);
+        score.setLayoutY( SCREEN_HEIGHT + 10);
         gamePlay.start();
         gRenderer.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
+                if (keyEvent.isControlDown()) {
+                    if (keyEvent.getCode() == KeyCode.R) {
+                        gamePlay.stop();
+                        removeRender();
+                        render();
+                        gamePlay.start();
+                    }
+                }
 
-                //                if (keyEvent.getCode() == KeyCode.D) {
-                //                    System.out.println(bombList.size());
-                //                }
-
-                if (!player.isDead()) {
+                if (player.isRendered() && !player.isDead()) {
                     player.handleEvent(keyEvent);
                 }
+
             }
         });
 

@@ -145,4 +145,7 @@ public class Balloom extends Character {
         dead.start();
     }
 
+    public void stopAnimation() {
+        timeline.stop();
+    }
 }

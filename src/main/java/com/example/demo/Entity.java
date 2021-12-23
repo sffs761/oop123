@@ -2,23 +2,40 @@ package com.example.demo;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
 import java.util.Objects;
 
 public abstract class Entity {
-    protected Rectangle frame;
     protected Image texture;
-    protected ImageView imageView;
+    protected ImageView imageView = new ImageView();
+    protected Rectangle frame = new Rectangle(0, 0, 0, 0);
 
     public Entity() {
-        frame = new Rectangle(0, 0, 0, 0);
-        texture = null;
+    }
+
+    public Image getTexture() {
+        return texture;
+    }
+
+    public void setTexture(Image texture) {
+        this.texture = texture;
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
     }
 
     public Rectangle getFrame() {
         return frame;
+    }
+
+    public void setFrame(Rectangle frame) {
+        this.frame = frame;
     }
 
     public int getX() {
@@ -53,6 +70,11 @@ public abstract class Entity {
         frame.setWidth(width);
     }
 
+    public boolean isRendered() {
+        return texture != null && frame != null && Main.gRenderer.getChildren()
+                .contains(imageView);
+    }
+
     public void loadImage(String filePath) {
         try {
             texture = new Image(Objects.requireNonNull(
@@ -67,9 +89,7 @@ public abstract class Entity {
     }
 
     public void render() {
-        imageView = new ImageView(texture);
-        imageView.setX(frame.getX());
-        imageView.setY(frame.getY());
+        update();
         Main.gRenderer.getChildren().add(imageView);
     }
 
@@ -79,8 +99,13 @@ public abstract class Entity {
         imageView.setImage(texture);
     }
 
-    public void remove() {
+    public void removeTextureInImageView() {
         imageView.setImage(null);
+    }
+
+    public void remove() {
+        Main.gRenderer.getChildren().remove(imageView);
+        frame = null;
     }
 
 }
