@@ -103,7 +103,37 @@ public class Main extends Application {
         portalBrick.render();
         existedEntityIndexes.add(k);
 
-        for (int i = 0; i < 49; i ++) {
+        for (int i = 0; i < 3; i++) {
+            int j = (int) (Math.random() * grasses.size());
+            while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
+                    && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
+                    && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
+                j = (int) (Math.random() * grasses.size());
+            };
+            switch ((int) (Math.random() * 3)) {
+                case 0:
+                    SpeedItem speedItem = new SpeedItem(grasses.get(j).getX(), grasses.get(j).getY());
+                    Main.speedItems.add(speedItem);
+                    speedItem.render();
+                    break;
+                case 1:
+                    FlameItem flameItem = new FlameItem(grasses.get(j).getX(), grasses.get(j).getY());
+                    Main.flameItems.add(flameItem);
+                    flameItem.render();
+                    break;
+                case 2:
+                    BombItem bombItem = new BombItem(grasses.get(j).getX(), grasses.get(j).getY());
+                    Main.bombItems.add(bombItem);
+                    bombItem.render();
+                    break;
+            }
+            Brick itemBrick = new Brick(grasses.get(j).getX(), grasses.get(j).getY());
+            bricks.add(itemBrick);
+            itemBrick.render();
+            existedEntityIndexes.add(j);
+        }
+
+        for (int i = 0; i < 46; i ++) {
             int j = (int) (Math.random() * grasses.size());
             while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
                     && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
@@ -144,6 +174,18 @@ public class Main extends Application {
     public void removeRender() {
         player.remove();
         portal.remove();
+        while (!speedItems.isEmpty()) {
+            speedItems.get(bricks.size() - 1).remove();
+            speedItems.remove(bricks.size() - 1);
+        }
+        while (!flameItems.isEmpty()) {
+            flameItems.get(bricks.size() - 1).remove();
+            flameItems.remove(bricks.size() - 1);
+        }
+        while (!bombItems.isEmpty()) {
+            bombItems.get(bricks.size() - 1).remove();
+            bombItems.remove(bricks.size() - 1);
+        }
         while (!bricks.isEmpty()) {
             bricks.get(bricks.size() - 1).remove();
             bricks.remove(bricks.size() - 1);
@@ -153,6 +195,15 @@ public class Main extends Application {
             enemies.get(enemies.size() - 1).remove();
             enemies.remove(enemies.size() - 1);
         }
+    }
+
+    public boolean containsBrick(Entity entity) {
+        for (Brick brick : bricks) {
+            if (Collision.isDuplicate(brick, entity)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     AnimationTimer gamePlay = new AnimationTimer() {
@@ -177,11 +228,13 @@ public class Main extends Application {
                     player.setDead(true);
                     player.dead();
                 }
-                if (Collision.isCollision(flame, portal)) {
-                    for (int i = 0; i < 6; i++) {
-                        Balloom newBalloom = new Balloom(portal.getX(), portal.getY());
-                        newBalloom.render();
-                        enemies.add(newBalloom);
+                if (!containsBrick(portal)) {
+                    if (Collision.isCollision(flame, portal)) {
+                        for (int i = 0; i < 6; i++) {
+                            Balloom newBalloom = new Balloom(portal.getX(), portal.getY());
+                            newBalloom.render();
+                            enemies.add(newBalloom);
+                        }
                     }
                 }
                 for (int i = 0; i < speedItems.size(); i++) {
@@ -257,18 +310,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Bomberman");
         Scene mainMenu;
-<<<<<<< Updated upstream
         Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + UI);
-        
-
         readMap("PreRenderedMap.txt");
         preRender();
-
-=======
-        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-        readMap("PreRenderedMap.txt");
-        preRender();
->>>>>>> Stashed changes
+//        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
         try {
             Parent menu = FXMLLoader.load(this.getClass().getResource("main-menu.fxml"));
             mainMenu = new Scene(menu);
@@ -286,11 +331,6 @@ public class Main extends Application {
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        //Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-
-
-        readMap("level0.txt");
         render();
         gRenderer.requestFocus();
         //primaryStage.setScene(scene);

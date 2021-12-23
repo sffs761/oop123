@@ -15,4 +15,7 @@ public class Portal extends StaticEntity {
         isEnabled = true;
     }
 
+    public boolean isEnabled() {
+        return isEnabled;
+    }
 }
