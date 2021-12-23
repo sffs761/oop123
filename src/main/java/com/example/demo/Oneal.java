@@ -6,20 +6,20 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
-public class Balloom extends Character {
+public class Oneal extends Character {
     protected int direction = 0;
 
-    public Balloom() {
+    public Oneal() {
         super();
-        loadImage("balloom.png");
+        loadImage("oneal.png");
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
-    public Balloom(int x, int y) {
+    public Oneal(int x, int y) {
         super(x, y);
-        loadImage("balloom.png");
-        speed = 0.025;
+        loadImage("oneal.png");
+        speed = 0.045;
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
@@ -97,7 +97,7 @@ public class Balloom extends Character {
             case 1: case 2:
                 directionString = "left";
         }
-        loadImage("balloom_" + directionString + ((int) step / 5 + 1) + ".png");
+        loadImage("oneal_" + directionString + ((int) step / 5 + 1) + ".png");
         step++;
         update();
     }
@@ -113,13 +113,29 @@ public class Balloom extends Character {
         if (checkCollision()) {
             setX(x);
             setY(y);
-            direction = ((int) (Math.random() * 100) + 1) % 4;
+            if (Main.player.isRendered() && !Main.player.isDead()) {
+                if (getX() == Main.player.getX()) {
+                    if (getY() >= Main.player.getY()) {
+                        direction = 0;
+                    } else {
+                        direction = 1;
+                    }
+                } else if (getY() == Main.player.getY()) {
+                    if (getX() >= Main.player.getX()) {
+                        direction = 3;
+                    } else {
+                        direction = 4;
+                    }
+                } else {
+                    direction = ((int) (Math.random() * 100) + 1) % 4;
+                }
+            }
         }
         update();
     }));
 
     public void stepDead() {
-        loadImage("balloom_dead" + ((int) step / 25) + ".png");
+        loadImage("oneal_dead" + ((int) step / 25) + ".png");
         step++;
         update();
     }
@@ -127,14 +143,14 @@ public class Balloom extends Character {
     AnimationTimer dead = new AnimationTimer() {
         @Override
         public void handle(long now) {
-        if (step < 75) {
-            stepDead();
-        }
-        if (step == 75) {
-            remove();
-            Main.enemies.remove(this);
-            dead.stop();
-        }
+            if (step < 75) {
+                stepDead();
+            }
+            if (step == 75) {
+                remove();
+                Main.enemies.remove(this);
+                dead.stop();
+            }
         }
     };
 

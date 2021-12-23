@@ -5,7 +5,8 @@ import javafx.animation.AnimationTimer;
 import java.util.ArrayList;
 
 public class Bomb extends DynamicObject {
-    private static int radius = 2;
+    private static int radius = 1;
+    private static int maxBombs = 1;
     private boolean walkAble = true;
     private ArrayList<Flame> currentFlames = new ArrayList<>();
 
@@ -21,6 +22,18 @@ public class Bomb extends DynamicObject {
 
     public void disableWalkability() {
         walkAble = false;
+    }
+
+    public static int getMaxBombs() {
+        return maxBombs;
+    }
+
+    public static void increaseRadius() {
+        radius++;
+    }
+
+    public static void increaseMaxBombs() {
+        maxBombs++;
     }
 
     public void stepBomb() {

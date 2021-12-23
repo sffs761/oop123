@@ -29,19 +29,27 @@ public class Bomber extends Character {
         isDead = dead;
     }
 
+    public void increaseSpeed() {
+        speed += 0.1;
+    }
+
 
 
     private void placeBomb() {
-        Bomb bomb = new Bomb();
-        double x = getX() % Main.SCALE < Main.SCALE / 2 ? getX() / Main.SCALE * Main.SCALE
-                : (getX() / Main.SCALE + 1) * Main.SCALE;
-        double y = getY() % Main.SCALE < Main.SCALE / 2 ? getY() / Main.SCALE * Main.SCALE
-                : (getY() / Main.SCALE + 1) * Main.SCALE;
-        bomb.setX((int) x);
-        bomb.setY((int) y);
-        Main.bombList.add(bomb);
-        bomb.render();
-        bomb.explode();
+        if (Main.bombList.size() + 1 <= Bomb.getMaxBombs()) {
+            Bomb bomb = new Bomb();
+            double x = getX() % Main.SCALE < Main.SCALE / 2 ? getX() / Main.SCALE * Main.SCALE
+                    : (getX() / Main.SCALE + 1) * Main.SCALE;
+            double y = getY() % Main.SCALE < Main.SCALE / 2 ? getY() / Main.SCALE * Main.SCALE
+                    : (getY() / Main.SCALE + 1) * Main.SCALE;
+            bomb.setX((int) x);
+            bomb.setY((int) y);
+            if (!Collision.isDuplicate(bomb, Main.portal)) {
+                Main.bombList.add(bomb);
+                bomb.render();
+                bomb.explode();
+            }
+        }
     }
 
     public void handleEvent(KeyEvent event) {
@@ -119,7 +127,6 @@ public class Bomber extends Character {
             }
             if (step == 90) {
                 remove();
-                Main.gRenderer.getChildren().remove(this);
                 dead.stop();
             }
         }
