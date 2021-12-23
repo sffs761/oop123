@@ -89,7 +89,9 @@ public class Main extends Application {
         ArrayList<Integer> existedEntityIndexes = new ArrayList<>();
 
         int k = (int) (Math.random() * grasses.size());
-        while (k == 0 || k == 1 || k == SCALE - 2) {
+        while (((grasses.get(k).getX() == SCALE || grasses.get(k).getX() == 2 * SCALE)
+                && grasses.get(k).getY() == SCALE) || (grasses.get(k).getX() == SCALE
+                && grasses.get(k).getY() == 2 * SCALE)) {
             k = (int) (Math.random() * grasses.size());
         };
         portal.setFrame(new Rectangle(0, 0, 0, 0));
@@ -103,7 +105,9 @@ public class Main extends Application {
 
         for (int i = 0; i < 49; i ++) {
             int j = (int) (Math.random() * grasses.size());
-            while (j == 0 || j == 1 || j == SCALE - 2 || existedEntityIndexes.contains(j)) {
+            while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
+                    && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
+                    && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
                 j = (int) (Math.random() * grasses.size());
             };
             Brick newBrick = new Brick(grasses.get(j).getX(), grasses.get(j).getY());
@@ -124,7 +128,9 @@ public class Main extends Application {
         player.render();
         for (int i = 0; i < 6; i++) {
             int j = (int) (Math.random() * grasses.size());
-            while (j == 0 || j == 1 || j == SCALE - 2 || existedEntityIndexes.contains(j)) {
+            while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
+                    && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
+                    && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
                 j = (int) (Math.random() * grasses.size());
             };
             Balloom newBalloom = new Balloom(grasses.get(j).getX(), grasses.get(j).getY());
