@@ -251,15 +251,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Bomberman");
         Scene mainMenu;
-<<<<<<< HEAD
         Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + UI);
-=======
-        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-<<<<<<< HEAD
+        
+
         readMap("PreRenderedMap.txt");
         preRender();
-=======
->>>>>>> 9e799b089aa82839cb3c2a2458c80520bd242df3
+
         try {
             Parent menu = FXMLLoader.load(this.getClass().getResource("main-menu.fxml"));
             mainMenu = new Scene(menu);
@@ -282,7 +279,6 @@ public class Main extends Application {
 
 
         readMap("level0.txt");
->>>>>>> c6f07b55495fd398a5eb5cb336b83b87fbe6891e
         render();
         gRenderer.requestFocus();
         //primaryStage.setScene(scene);
