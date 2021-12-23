@@ -105,14 +105,12 @@ public class Main extends Application {
         existedEntityIndexes.add(k);
 
         for (int i = 0; i < 3; i++) {
-<<<<<<< Updated upstream
-=======
+
             int j = (int) (Math.random() * grasses.size());
             while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
                     && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
                     && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
-<<<<<<< HEAD
-=======
+
                 j = (int) (Math.random() * grasses.size());
             };
             switch ((int) (Math.random() * 3)) {
@@ -139,12 +137,12 @@ public class Main extends Application {
         }
 
         for (int i = 0; i < 46; i ++) {
->>>>>>> Stashed changes
+
             int j = (int) (Math.random() * grasses.size());
             while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
                     && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
                     && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
-<<<<<<< Updated upstream
+
                 j = (int) (Math.random() * grasses.size());
             };
             switch ((int) (Math.random() * 3)) {
@@ -175,9 +173,7 @@ public class Main extends Application {
             while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
                     && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
                     && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
-=======
->>>>>>> 4097f0ec9738825af23dbf5773d3b6ff2939c69d
->>>>>>> Stashed changes
+
                 j = (int) (Math.random() * grasses.size());
             };
             Brick newBrick = new Brick(grasses.get(j).getX(), grasses.get(j).getY());
@@ -355,35 +351,14 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Bomberman");
         Scene mainMenu;
-<<<<<<< HEAD
+
         Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + SCALE);
 
-=======
-<<<<<<< Updated upstream
-        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + UI);
-<<<<<<< Updated upstream
-        readMap("PreRenderedMap.txt");
-        preRender();
-//        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-=======
-<<<<<<< HEAD
-        
->>>>>>> 7797f530a2f354f81b7a591f22194a87ef5ddfb6
+
+
 
         readMap("PreRenderedMap.txt");
         preRender();
-
-=======
-        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-        readMap("PreRenderedMap.txt");
-        preRender();
->>>>>>> Stashed changes
-=======
-        readMap("PreRenderedMap.txt");
-        preRender();
-//        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
->>>>>>> 4097f0ec9738825af23dbf5773d3b6ff2939c69d
->>>>>>> Stashed changes
         try {
             Parent menu = FXMLLoader.load(this.getClass().getResource("main-menu.fxml"));
             mainMenu = new Scene(menu);
