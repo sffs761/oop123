@@ -121,10 +121,56 @@ public class Main extends Application {
         existedEntityIndexes.add(k);
 
         for (int i = 0; i < 3; i++) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> bd81f1f5a39afbeafaa4a2d129de0504044d976f
             int j = (int) (Math.random() * grasses.size());
             while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
                     && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
                     && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> bd81f1f5a39afbeafaa4a2d129de0504044d976f
+                j = (int) (Math.random() * grasses.size());
+            };
+            switch ((int) (Math.random() * 3)) {
+                case 0:
+                    SpeedItem speedItem = new SpeedItem(grasses.get(j).getX(), grasses.get(j).getY());
+                    Main.speedItems.add(speedItem);
+                    speedItem.render();
+                    break;
+                case 1:
+                    FlameItem flameItem = new FlameItem(grasses.get(j).getX(), grasses.get(j).getY());
+                    Main.flameItems.add(flameItem);
+                    flameItem.render();
+                    break;
+                case 2:
+                    BombItem bombItem = new BombItem(grasses.get(j).getX(), grasses.get(j).getY());
+                    Main.bombItems.add(bombItem);
+                    bombItem.render();
+                    break;
+            }
+            Brick itemBrick = new Brick(grasses.get(j).getX(), grasses.get(j).getY());
+            bricks.add(itemBrick);
+            itemBrick.render();
+            existedEntityIndexes.add(j);
+        }
+
+        for (int i = 0; i < 46; i ++) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> bd81f1f5a39afbeafaa4a2d129de0504044d976f
+            int j = (int) (Math.random() * grasses.size());
+            while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
+                    && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
+                    && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> bd81f1f5a39afbeafaa4a2d129de0504044d976f
                 j = (int) (Math.random() * grasses.size());
             };
             switch ((int) (Math.random() * 3)) {
@@ -155,36 +201,10 @@ public class Main extends Application {
             while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
                     && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
                     && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
-                j = (int) (Math.random() * grasses.size());
-            };
-            switch ((int) (Math.random() * 3)) {
-                case 0:
-                    SpeedItem speedItem = new SpeedItem(grasses.get(j).getX(), grasses.get(j).getY());
-                    Main.speedItems.add(speedItem);
-                    speedItem.render();
-                    break;
-                case 1:
-                    FlameItem flameItem = new FlameItem(grasses.get(j).getX(), grasses.get(j).getY());
-                    Main.flameItems.add(flameItem);
-                    flameItem.render();
-                    break;
-                case 2:
-                    BombItem bombItem = new BombItem(grasses.get(j).getX(), grasses.get(j).getY());
-                    Main.bombItems.add(bombItem);
-                    bombItem.render();
-                    break;
-            }
-            Brick itemBrick = new Brick(grasses.get(j).getX(), grasses.get(j).getY());
-            bricks.add(itemBrick);
-            itemBrick.render();
-            existedEntityIndexes.add(j);
-        }
+<<<<<<< HEAD
+=======
 
-        for (int i = 0; i < 46; i ++) {
-            int j = (int) (Math.random() * grasses.size());
-            while (((grasses.get(j).getX() == SCALE || grasses.get(j).getX() == 2 * SCALE)
-                    && grasses.get(j).getY() == SCALE) || (grasses.get(j).getX() == SCALE
-                    && grasses.get(j).getY() == 2 * SCALE) || existedEntityIndexes.contains(j)) {
+>>>>>>> bd81f1f5a39afbeafaa4a2d129de0504044d976f
                 j = (int) (Math.random() * grasses.size());
             };
             Brick newBrick = new Brick(grasses.get(j).getX(), grasses.get(j).getY());
@@ -377,10 +397,22 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         stage = primaryStage;
         primaryStage.setTitle("Bomberman");
+<<<<<<< HEAD
         gameplayScene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + SCALE);
         readMap("PreRenderedMap.txt");
         preRender();
 //        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+=======
+        Scene mainMenu;
+
+        Scene scene = new Scene(gRenderer, SCREEN_WIDTH, SCREEN_HEIGHT + SCALE);
+
+
+
+
+        readMap("PreRenderedMap.txt");
+        preRender();
+>>>>>>> bd81f1f5a39afbeafaa4a2d129de0504044d976f
         try {
             Parent menu = FXMLLoader.load(this.getClass().getResource("main-menu.fxml"));
             mainMenu = new Scene(menu);
