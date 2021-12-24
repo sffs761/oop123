@@ -3,7 +3,6 @@ package com.example.demo;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -11,11 +10,11 @@ import javafx.scene.input.KeyEvent;
 
 public class Bomber extends Character {
     private boolean isDead = false;
-
+    public Sound sound = new Sound();
     public Bomber() {
         super();
         loadImage("player.png");
-        speed = 0.25;
+        speed = 0.5;
     }
 
     public double getSpeed() {
@@ -35,10 +34,8 @@ public class Bomber extends Character {
     }
 
     public void increaseSpeed() {
-        speed += 0.25;
+        speed += 0.5;
     }
-
-
 
     private void placeBomb() {
         if (Main.bombList.size() + 1 <= Bomb.getMaxBombs()) {
@@ -172,6 +169,7 @@ public class Bomber extends Character {
     public void dead() {
         step = 0;
         dead.start();
+        sound.Play("13_Bomber Die");
     }
 
 }

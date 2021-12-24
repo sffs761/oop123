@@ -29,29 +29,34 @@ public class Sound {
      * Play.
      */
 
-    public void Play() throws UnsupportedAudioFileException,
-            IOException, LineUnavailableException {
-//        String path = "E:\\Repo\\demo\\src\\main\\resources\\com\\example\\Sound\\" + name + ".wav";
-        File file = new File(String.valueOf(this.getClass().getResource(name + "wav")));
-        AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioStream);
-        clip.start();
+    public void Play(String name) {
+        try {
+            String path =  "E:\\demo\\demo\\src\\main\\resources\\com\\example\\Sound\\" + name + ".wav";
+            File file = new File(path);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Loop.
      */
 
-    public void Loop(String name) throws UnsupportedAudioFileException,
-            IOException, LineUnavailableException {
-//        String path = "E:\\Repo\\demo\\src\\main\\resources\\com\\example\\Sound\\" + name + ".wav";
-        File file = new File(String.valueOf(this.getClass().getResource(name + "wav")));
-        AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioStream);
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+    public void Loop(String name) {
+        try {
+            String path = "E:\\demo\\demo\\src\\main\\resources\\com\\example\\Sound\\" + name + ".wav";
+            File file = new File(path);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
 }
 

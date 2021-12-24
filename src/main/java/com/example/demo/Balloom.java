@@ -62,11 +62,11 @@ public class Balloom extends Enemy {
                 return true;
             }
         }
-        for (Character otherEnemy : Main.enemies) {
-            if (otherEnemy != this && Collision.isCollision(this, otherEnemy)) {
-                return true;
-            }
-        }
+//        for (Enemy otherEnemy : Main.enemies) {
+//            if (otherEnemy != this && Collision.isCollision(this, otherEnemy)) {
+//                return true;
+//            }
+//        }
         for (Bomb bomb : Main.bombList) {
             if (Collision.isCollision(this, bomb)) {
                 return true;
@@ -115,7 +115,7 @@ public class Balloom extends Enemy {
         if (checkCollision()) {
             setX(x);
             setY(y);
-            direction = ((int) (Math.random() * 100) + 1) % 4;
+            direction = (int) (Math.random() * 4);
         }
         update();
     }));

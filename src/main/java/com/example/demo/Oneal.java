@@ -7,7 +7,7 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 public class Oneal extends Enemy {
-    protected int direction = 0;
+    protected int direction = (int) (Math.random() * 4);
 
     public Oneal() {
         super();
@@ -21,7 +21,7 @@ public class Oneal extends Enemy {
         super(x, y);
         score = 200;
         loadImage("oneal.png");
-        speed = 0.045;
+        speed = 0.025;
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
@@ -62,11 +62,11 @@ public class Oneal extends Enemy {
                 return true;
             }
         }
-        for (Character otherEnemy : Main.enemies) {
+/*        for (Enemy otherEnemy : Main.enemies) {
             if (otherEnemy != this && Collision.isCollision(this, otherEnemy)) {
                 return true;
             }
-        }
+        }*/
         for (Bomb bomb : Main.bombList) {
             if (Collision.isCollision(this, bomb)) {
                 return true;
@@ -107,6 +107,19 @@ public class Oneal extends Enemy {
     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.035), event -> {
         int x = getX();
         int y = getY();
+        if (getX() == Main.player.getX()) {
+            if (getY() >= Main.player.getY()) {
+                direction = 0;
+            } else {
+                direction = 1;
+            }
+        } else if (getY() == Main.player.getY()) {
+            if (getX() >= Main.player.getX()) {
+                direction = 2;
+            } else {
+                direction = 3;
+            }
+        }
         move();
         stepMove();
         if (step == 15) {
@@ -124,12 +137,12 @@ public class Oneal extends Enemy {
                     }
                 } else if (getY() == Main.player.getY()) {
                     if (getX() >= Main.player.getX()) {
-                        direction = 3;
+                        direction = 2;
                     } else {
-                        direction = 4;
+                        direction = 3;
                     }
                 } else {
-                    direction = ((int) (Math.random() * 100) + 1) % 4;
+                    direction = (int) (Math.random() * 4);
                 }
             }
         }
@@ -165,5 +178,9 @@ public class Oneal extends Enemy {
 
     public void stopAnimation() {
         timeline.stop();
+    }
+
+    public void startAnimation() {
+        timeline.play();
     }
 }

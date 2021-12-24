@@ -4,7 +4,7 @@ import javafx.animation.AnimationTimer;
 
 public class Flame extends DynamicObject {
     private String direction;
-
+    public Sound sound = new Sound();
     public Flame(String direction, int x, int y) {
         super(x, y);
         this.direction = direction;
@@ -32,6 +32,7 @@ public class Flame extends DynamicObject {
     public void start() {
         step = 0;
         burn.start();
+        sound.Play("15_Explosion Bomb");
     }
 
     public void setDirection(String direction) {

@@ -17,4 +17,8 @@ public abstract class Enemy extends Character {
 
     public abstract void dead();
 
+    public abstract void stopAnimation();
+
+    public abstract void startAnimation();
+
 }
